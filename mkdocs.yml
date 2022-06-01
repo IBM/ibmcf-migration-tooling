@@ -42,7 +42,6 @@ theme:
     scheme: default
     primary: black
     accent: blue
-  custom_dir: overrides
 
 # Plugins
 plugins:
