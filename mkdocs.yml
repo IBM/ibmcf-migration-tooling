@@ -1,7 +1,7 @@
 # Project information
 site_name: Migrating IBM Cloud Foundry applications to serverless and Kubernetes services on IBM Cloud
 site_url: https://ibm.github.io/ibmcf-migration-tooling
-site_author: IBM Developer
+site_author: Elvin J. Galarza
 
 # Repository
 repo_name: workshop-setup
@@ -33,14 +33,16 @@ theme:
     text: IBM Plex Sans
     code: IBM Plex Mono
   icon:
-    logo: material/library
+    logo: ibm_8bar_reverse_2
   features:
     - navigation.tabs
     #- navigation.instant
+    #- navigation.expand
   palette:
     scheme: default
-    primary: blue
+    primary: black
     accent: blue
+  custom_dir: overrides
 
 # Plugins
 plugins:
