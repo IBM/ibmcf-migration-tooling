@@ -907,10 +907,14 @@ Hints:
 
   all-icr-io
 </div></code></pre>
-            <p>Find your Red Hat OpenShift on IBM Cloud cluster's ingress subdomain here:
+            <p>You can find your Red Hat OpenShift on IBM Cloud cluster's ingress subdomain by logging into the IBM Cloud dashboard. Click the &#9776; icon, then click on OpenShift, and then click on Clusters. Finally, select the OpenShift cluster that you intend to deploy the application to. 
+              <img src="../images/ic-dashboard-cluster.png"
+                alt="Red Hat OpenShift on IBM Cloud dashboard"></p>
+                The ingress subdomain information can be found here:
               <img src="../images/ibm-roks-ingress.png"
                 alt="Red Hat OpenShift on IBM Cloud dashboard"></p>
-            <p>Copy/paste it</p>
+            </p>
+            <p>Copy/paste it into the prompt.</p>
             <p><strong>Output:</strong></p>
             <pre><code class="language-text"><div> all-icr-io
 INFO[1586] Generating Buildconfig pipeline for CI/CD
@@ -939,12 +943,12 @@ Hints:
 - Ingress host domain is part of service URL
 
 
-  (myproject.com) myrokscluster-9ea22e9019fc061eb22032a3a714e4ab-0000.us-south.containers.appdomain.cloud
+  (myproject.com) myrokscluster-9ea22e9019fc061eb22032a3a714e4456321ab-0000.us-south.containers.appdomain.cloud
 </div></code></pre>
             <p>Select <code>ClusterIP</code> for each of the remaining services that way they are not publicly exposed.
               For more information on ClusterIP see here:</p>
             <p><strong>Output:</strong></p>
-            <pre><code class="language-text"><div> myrokscluster-9ea22e9019fc061eb22032a3a714e4ab-0000.us-south.containers.appdomain.cloud
+            <pre><code class="language-text"><div> myrokscluster-9ea22e9019fc061eb22032a3a714e4456321ab-0000.us-south.containers.appdomain.cloud
 INFO[1714] Transformer Kubernetes Done
 INFO[1714] Transformer ClusterSelector processing 2 artifacts
 INFO[1714] Transformer ClusterSelector Done
