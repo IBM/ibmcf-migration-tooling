@@ -394,7 +394,7 @@
 
                   <li class="md-nav__item">
                     <a href="#deploy-the-application-to-your-red-hat-openshift-on-ibm-cloud-cluster" class="md-nav__link">
-                      2. Deploy to Red Hat OpenShift on IBM Cloud 
+                      2. Deploy to IBM Kubernetes Service 
                     </a>
 
                   </li>
@@ -863,7 +863,7 @@ Hints:
 
   (2)
 </div></code></pre>
-            <p>Select IBM Cloud Registry (<code>icr.io</code>) as the image registry (press Enter).</p>
+            <p>Select IBM Cloud Container Registry (<code>icr.io</code>) as the image registry (press Enter).</p>
             <p><strong>Output:</strong></p>
             <pre><code class="language-text"><div>? Enter the URL of the image registry :
 ID: move2kube.target.imageregistry.url
@@ -876,7 +876,7 @@ Hints:
 &gt; icr.io
   quay.io
 </div></code></pre>
-            <p>Keep the default IBM Cloud Registry namespace, <strong>myproject</strong> (press Enter). If you created a
+            <p>Keep the default IBM Cloud Container Registry namespace, <strong>myproject</strong> (press Enter). If you created a
               registry namespace with a different name earlier, use that name instead.</p>
             <p><strong>Output:</strong></p>
             <pre><code class="language-text"><div> icr.io
@@ -1059,8 +1059,7 @@ INFO[1840] Transformer ReadMeGenerator Done
 INFO[1841] Transformation done
 INFO[1841] Transformed target artifacts can be found at [/Users/elvinjohngalarza@ibm.com/move2kube-iks-demo/move2kube-demos-clean/myproject].
 </div></code></pre>
-            <h3 id="deploy-the-application-to-your-red-hat-openshift-on-ibm-cloud-cluster">Deploy the application to
-              your Red Hat OpenShift on IBM Cloud cluster</h3>
+            <h3 id="deploy-the-application-to-your-red-hat-openshift-on-ibm-cloud-cluster">Deploy the application to your IBM Kubernetes cluster</h3>
             <p>We're almost done! Now that we've created the target artifacts, our transformation is finished. We can
               now move onto deploying the application with the respective YAML files that were generated.</p>
             <p>Take a look at what was generated</p>
@@ -1073,7 +1072,7 @@ INFO[1841] Transformed target artifacts can be found at [/Users/elvinjohngalarza
 ls</div></code></pre>
             <p><strong>Output:</strong></p>
             <pre><code class="language-text"><div>builddockerimages.bat  builddockerimages.sh  pushimages.sh  pushimages.sh</div></code></pre>
-            <p>Push the local images to IBM Cloud Registry</p>
+            <p>Push the local images to IBM Cloud Container Registry</p>
             <pre><code class="language-shell"><div>./builddockerimages.sh</div></code></pre>
             <details>
               <summary> Click to see output </summary>
@@ -1265,23 +1264,19 @@ f1ccf0afcb5e: Layer already exists
 latest: digest: sha256:e6eaf618b0a8366a359b0bdb7d0ffc75bb1146a1ab37dd8cd383444f4ae42f18 size: 1161
 </div></code></pre>
             </details>
-            <p>Now that the images are pushed, we can pull them into our cluster. Let's log into our cluster. Click the
-              Kubernetes web console button in the top right.</p>
-            <p><img src="../images/ibm-iks-console.png"
-                alt="Red Hat OpenShift on IBM Cloud dashboard"></p>
-            <p>Click on your IAM#name --&gt; Copy Login command</p>
-            <p><img src="../images/ocp-login.png"
-                alt="OpenShift Container Platform"></p>
-            <p>Display the token and copy/paste the <strong>oc login</strong> command into your terminal.</p>
-            <p><img src="../images/ocp-token.png"
-                alt="OpenShift Container Platform display token"></p>
-            <p>Once you've logged into your cluster, you can create a new project to deploy your application into.</p>
-            <pre><code class="language-shell"><div>oc new-project move2kube-demo</div></code></pre>
-            <p>By default, you'll be moved into this newly created project. Just to be sure we can perform the follow
-              command.</p>
-            <pre><code class="language-shell"><div>oc project move2kube-demo</div></code></pre>
-            <p>Now that we're in our project, we can deploy our application by using the locally generated artifacts.
-            </p>
+            <p>Now that the images are pushed, we can pull them into our cluster. Let's log into our cluster.</p>
+            <p>Perform the following command and log into the account that has access to your IBM Kubernetes cluster.</p>
+            <pre><code>ibmcloud login</code></pre>
+            <p>Validate that your cluster is shown when listing all clusters:</p>
+            <pre><code>ibmcloud ks clusters</code></pre>
+            <p>Initialize <code>kubectl</code> command environment by replacing the placeholder <code>&lt;your-cluster-id&gt;</code> with the appropriate cluster ID that was displayed earlier:</p>
+            <pre><code>ibmcloud ks cluster config -c &lt;your-cluster-id&gt; --admin</code></pre>
+            <p>You should now be able to perform <code>kubectl</code> commands on that IBM Kubernetes cluster.</p>
+            <p>You can now create a new namespace to deploy your application to.</p>
+            <pre><code class="language-shell"><div>kubectl create namespace move2kube-demo</div></code></pre>
+            <p>With the namespace created, you must move the IBM Cloud Container Registry secret called <code>all-icr-io</code> into the newly created namespace. The secret is deployed to the <code>default</code> namespace automatically upon creation of the cluster, so that secret can be copied into the new namespace.</p>
+            <pre><code class="language-shell"><div>kubectl get secret all-icr-io -n default -o yaml | sed "s/default/move2kube-demo/" | kubectl apply -n move2kube-demo -f -</div></code></pre>
+            <p>Now that the <code>all-icr-io</code> secret is copied over to the <code>move2kube-demo</code> namespace, the application is ready to be deployed.</p>
             <pre><code class="language-shell"><div>cd ..
 cd deploy
 ls
@@ -1291,12 +1286,8 @@ ls
 yamls                 compose               
 knative-parameterized yamls-parameterized
 </div></code></pre>
-            <p>Since OpenShift is a Kubernetes platform, you can perform <strong>kubectl</strong> CLI commands as well
-              as <strong>oc</strong> CLI commands. Choose one. We'll apply the application services associated YAML
-              files located in <code>myproject/deploy/yamls</code>.</p>
-            <pre><code class="language-shell"><div>kubectl apply -f yamls</div></code></pre>
-            <p>OR</p>
-            <pre><code class="language-shell"><div>oc apply -f yamls</div></code></pre>
+            <p>Apply the YAML files located in <code>myproject/deploy/yamls</code>.</p>
+            <pre><code class="language-shell"><div>kubectl apply -f yamls --namespace=move2kube-demo</div></code></pre>
             <p><strong>Output:</strong></p>
             <pre><code class="language-text"><div>deployment.apps/customers created
 imagestream.image.openshift.io/customers-latest created
@@ -1318,8 +1309,7 @@ imagestream.image.openshift.io/orders-latest created
 service/orders created
 </div></code></pre>
             <p>Let's take a look at the deployments.</p>
-            <pre><code class="language-shell"><div>oc get deployments
-                  </div></code></pre>
+            <pre><code class="language-shell"><div>kubectl get deployments --namespace=move2kube-demo</div></code></pre>
             <p><strong>Output:</strong></p>
             <pre><code class="language-text"><div>NAME        READY   UP-TO-DATE   AVAILABLE   AGE
 customers   2/2     2            2           55s
@@ -1328,7 +1318,7 @@ gateway     2/2     2            2           55s
 inventory   2/2     2            2           55s
 orders      2/2     2            2           55s</div></code></pre>
             <p>Let's take a look at the pods.</p>
-            <pre><code class="language-shell"><div>oc get pods</div></code></pre>
+            <pre><code class="language-shell"><div>kubectl get pods --namespace=move2kube-demo</div></code></pre>
             <p><strong>Output:</strong></p>
             <pre><code class="language-text"><div>NAME                         READY   STATUS    RESTARTS   AGE
 customers-88fbd8749-9xlf2    1/1     Running   0          2m4s
@@ -1342,32 +1332,30 @@ inventory-5bd58c7c46-v4nzc   1/1     Running   0          2m2s
 orders-649c54cfdd-bwjxt      1/1     Running   0          2m1s
 orders-649c54cfdd-vwn8f      1/1     Running   0          2m1s
 </div></code></pre>
-            <p>Let's take a look at the services associated with the pods.</p>
+            <p>Let's take a look at the services.</p>
+            <pre><code>kubectl get svc --namespace=move2kube-demo</code></pre>
             <p><strong>Output:</strong></p>
             <pre><code class="language-text"><div>NAME        TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
-customers   ClusterIP   172.21.228.223   &lt;none&gt;        8080/TCP   5m22s
-frontend    ClusterIP   172.21.174.224   &lt;none&gt;        8080/TCP   5m22s
-gateway     ClusterIP   172.21.148.252   &lt;none&gt;        8080/TCP   5m22s
-inventory   ClusterIP   172.21.144.118   &lt;none&gt;        8080/TCP   5m22s
-orders      ClusterIP   172.21.164.213   &lt;none&gt;        8080/TCP   5m22s
+customers   ClusterIP   172.21.118.116   &lt;none&gt;        8080/TCP   5m22s
+frontend    ClusterIP   172.21.218.88    &lt;none&gt;        8080/TCP   5m22s
+gateway     ClusterIP   172.21.13.142    &lt;none&gt;        8080/TCP   5m22s
+inventory   ClusterIP   172.21.82.172    &lt;none&gt;        8080/TCP   5m22s
+orders      ClusterIP   172.21.2.136     &lt;none&gt;        8080/TCP   5m22s
 </div></code></pre>
-            <p>Finally, let's take a look at the routes associated with the services. We can perform an <code>oc</code>
-              command like the above, but let's take a look at the web console instead.</p>
-            <p>In the web console, select <strong>Developer</strong> view.</p>
-            <p><img src="../images/ocp-developer.png"
-                alt="OpenShift Container Platform - Developer View"></p>
-            <p>Navigate to <strong>Topology</strong> and make sure that you've selected the <strong>move2kube-demo</strong> project.</p>
-            <p><img src="../images/ocp-topology.png"
-              alt="OpenShift Container Platform - Topology View"></p>
+            <p>Finally, let's take a look at the ingress. We can perform a <code>kubectl</code> command like the above, but let's take a look at the web console instead.</p>
+            <p><img src="../images/ibm-iks-console.png"></p>
+            <p>In the web console, select the <code>move2kube-demo</code> <strong>Namespace</strong>.</p>
+            <p><img src="../images/iks-project.png"></p>
+            <p>Under <strong>Service</strong>, navigate to <strong>Ingresses</strong>.</p>
+            <p><img src="../images/iks-ingress.png"></p>
               <p>You should see a Topology view of all the <code>enterprise-app</code> components in the form of pods.</p>
               <p>Click the &quot;Open url&quot; icon on the frontend pod.</p>
-            <p><img src="../images/ocp-route.png"
+            <p><img src="../images/iks-frontend.png"
                 alt="example-app frontend on cluster"></p>
             <p>You should be taken to the frontend of the <code>enterprise-app</code>.</p>
-            <p><img src="../images/roks-app-frontend.png"
+            <p><img src="../images/iks-app-frontend.png"
               alt="example-app frontend on cluster"></p>  
-            <p>Congrats! You've successfully migrated the <code>enterprise-app</code> application from IBM Cloud Foundry application to a Red Hat OpenShift on IBM
-              Cloud cluster.</p>
+            <p>Congrats! You've successfully migrated the <code>enterprise-app</code> application from IBM Cloud Foundry application to an IBM Kubernetes cluster.</p>
 
 
 

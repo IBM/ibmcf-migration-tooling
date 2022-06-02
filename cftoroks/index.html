@@ -210,7 +210,7 @@
   <div class="md-container" data-md-component="container">
 
 
-
+<!-- main content -->
 
     <main class="md-main" data-md-component="main">
       <div class="md-main__inner md-grid">
@@ -855,7 +855,7 @@ Hints:
 
   (2)
 </div></code></pre>
-            <p>Select IBM Cloud Registry (<code>icr.io</code>) as the image registry (press Enter).</p>
+            <p>Select IBM Cloud Container Registry (<code>icr.io</code>) as the image registry (press Enter).</p>
             <p><strong>Output:</strong></p>
             <pre><code class="language-text"><div>? Enter the URL of the image registry :
 ID: move2kube.target.imageregistry.url
@@ -868,7 +868,7 @@ Hints:
 &gt; icr.io
   quay.io
 </div></code></pre>
-            <p>Keep the default IBM Cloud Registry namespace, <strong>myproject</strong> (press Enter). If you created a
+            <p>Keep the default IBM Cloud Container Registry namespace, <strong>myproject</strong> (press Enter). If you created a
               registry namespace with a different name earlier, use that name instead.</p>
             <p><strong>Output:</strong></p>
             <pre><code class="language-text"><div> icr.io
@@ -1065,7 +1065,7 @@ INFO[1841] Transformed target artifacts can be found at [/Users/elvinjohngalarza
 ls</div></code></pre>
             <p><strong>Output:</strong></p>
             <pre><code class="language-text"><div>builddockerimages.bat  builddockerimages.sh  pushimages.sh  pushimages.sh</div></code></pre>
-            <p>Push the local images to IBM Cloud Registry</p>
+            <p>Push the local images to IBM Cloud Container Registry</p>
             <pre><code class="language-shell"><div>./builddockerimages.sh</div></code></pre>
             <details>
               <summary> Click to see output </summary>
