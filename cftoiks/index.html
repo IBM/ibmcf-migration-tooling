@@ -424,7 +424,7 @@
             <h1 id="exercise-title">Steps for migrating to IBM Kubernetes Service<a class="headerlink" href="#exercise-title"
                 title="Permanent link">&para;</a></h1>
 
-            <h3 id="perform-a-transformation-on-your-sitedatakeywordibmcf_full-application-via-move2kube-transform">
+            <h3 id="perform-a-transformation-on-your-ibmcf_full-application-via-move2kube-transform">
               Perform a transformation on your IBM Cloud Foundry application via <code>move2kube transform</code></h3>
             <p>In the transform phase, we detect our plan and will perform a transformation using the plan. You'll be
               asked a series of questions related to the application itself, your image registry, and your cluster.
@@ -954,7 +954,7 @@ Hints:
   (myproject.com) myikscluster-9ea22e9099fc061eb22032a3a710e4156132ab-0000.us-south.containers.appdomain.cloud
 </div></code></pre>
             <p>Select <code>ClusterIP</code> for each of the remaining services that way they are not publicly exposed.
-              For more information on ClusterIP see here:</p>
+              For more information on ClusterIP see <a href="https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types">here</a></p>
             <p><strong>Output:</strong></p>
             <pre><code class="language-text"><div> myikscluster-9ea22e9099fc061eb22032a3a710e4156132ab-0000.us-south.containers.appdomain.cloud
 INFO[1714] Transformer Kubernetes Done
@@ -1059,7 +1059,7 @@ INFO[1840] Transformer ReadMeGenerator Done
 INFO[1841] Transformation done
 INFO[1841] Transformed target artifacts can be found at [/Users/elvinjohngalarza@ibm.com/move2kube-iks-demo/move2kube-demos-clean/myproject].
 </div></code></pre>
-            <h3 id="deploy-the-application-to-your-red-hat-openshift-on-ibm-cloud-cluster">Deploy the application to your IBM Kubernetes cluster</h3>
+            <h3 id="deploy-the-application-to-your-ibm-cloud-kubernetes-cluster">Deploy the application to your IBM Kubernetes cluster</h3>
             <p>We're almost done! Now that we've created the target artifacts, our transformation is finished. We can
               now move onto deploying the application with the respective YAML files that were generated.</p>
             <p>Take a look at what was generated</p>

@@ -416,7 +416,7 @@
             <h1 id="exercise-title">Steps for migrating to Red Hat OpenShift on IBM Cloud<a class="headerlink" href="#exercise-title"
                 title="Permanent link">&para;</a></h1>
 
-            <h3 id="perform-a-transformation-on-your-sitedatakeywordibmcf_full-application-via-move2kube-transform">
+            <h3 id="perform-a-transformation-on-your-ibmcf_full-application-via-move2kube-transform">
               Perform a transformation on your IBM Cloud Foundry application via <code>move2kube transform</code></h3>
             <p>In the transform phase, we detect our plan and will perform a transformation using the plan. You'll be
               asked a series of questions related to the application itself, your image registry, and your cluster.
@@ -855,7 +855,7 @@ Hints:
 
   (2)
 </div></code></pre>
-            <p>Select IBM Cloud Container Registry (<code>icr.io</code>) as the image registry (press Enter).</p>
+            <p>Select IBM Cloud Container Registry (<code>icr.io</code>) as the image registry (press Enter). You can also select <code>Other (specify custom option)</code> and enter the URL of the image registry in the next question.</p>
             <p><strong>Output:</strong></p>
             <pre><code class="language-text"><div>? Enter the URL of the image registry :
 ID: move2kube.target.imageregistry.url
@@ -946,7 +946,7 @@ Hints:
   (myproject.com) myrokscluster-9ea22e9019fc061eb22032a3a714e4456321ab-0000.us-south.containers.appdomain.cloud
 </div></code></pre>
             <p>Select <code>ClusterIP</code> for each of the remaining services that way they are not publicly exposed.
-              For more information on ClusterIP see here:</p>
+              For more information on ClusterIP see <a href="https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types">here</a></p>
             <p><strong>Output:</strong></p>
             <pre><code class="language-text"><div> myrokscluster-9ea22e9019fc061eb22032a3a714e4456321ab-0000.us-south.containers.appdomain.cloud
 INFO[1714] Transformer Kubernetes Done
